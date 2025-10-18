@@ -1351,7 +1351,7 @@ ComfyUI/output/sora_videos/sora_YYYYMMDD_HHMMSS_xxxxx.mp4
 
 <div align="center">
 
-<img src="assets/wechat_qrcode.png" alt="微信二维码" width="200"/>
+<img src="https://github.com/xuchenxu168/images/blob/main/%E5%BE%AE%E4%BF%A1%E5%8F%B7.jpg" alt="微信二维码" width="200"/>
 
 **扫码添加微信**
 
@@ -1365,7 +1365,7 @@ ComfyUI/output/sora_videos/sora_YYYYMMDD_HHMMSS_xxxxx.mp4
 
 <div align="center">
 
-<img src="assets/wechat_pay_qrcode.png" alt="微信收款二维码" width="200"/>
+<img src="https://github.com/xuchenxu168/images/blob/main/%E6%94%B6%E6%AC%BE%E7%A0%81.jpg" alt="微信收款二维码" width="200"/>
 
 **微信赞赏**
 
