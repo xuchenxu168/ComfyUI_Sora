@@ -1,0 +1,16 @@
+{
+    "api_key": "sk-NEF5kPDaUTzpLPwb9YLHHZtPeauRQBnPzc8MI4I7LJ3oadpG",
+    "api_provider": "t8",
+    "base_url": "https://ai.t8star.cn/v1",
+    "comfly_api_key": "sk-9wjYfsOrd1WxTd61AGxCcmI3tAubLnUvDOwaiuWE25XtYHNx",
+    "comfly_base_url": "https://ai.comfly.chat/v1",
+    "aabao_api_key": "sk-PY9TXCVwMzFWjGa9zmqagGpiZzguYYyNMCtCDv7Qn983G9PY",
+    "aabao_base_url": "https://api.aabao.top/v1",
+    "timeout": 600,
+    "default_model": "sora-2",
+    "default_quality": "1080p",
+    "default_aspect_ratio": "16:9",
+    "default_duration": 5,
+    "max_retries": 3,
+    "retry_delay": 5
+}
