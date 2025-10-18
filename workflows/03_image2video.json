@@ -1,0 +1,184 @@
+{
+  "last_node_id": 5,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [100, 100],
+      "size": [320, 314],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [1],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "SoraImage2Video",
+      "pos": [500, 100],
+      "size": [400, 700],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [2],
+          "slot_index": 0
+        },
+        {
+          "name": "video_url",
+          "type": "STRING",
+          "links": [3],
+          "slot_index": 1
+        },
+        {
+          "name": "response_info",
+          "type": "STRING",
+          "links": [4],
+          "slot_index": 2
+        },
+        {
+          "name": "prompt_used",
+          "type": "STRING",
+          "links": [5],
+          "slot_index": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SoraImage2Video"
+      },
+      "widgets_values": [
+        "镜头缓慢向前推进，展现更多细节，保持画面稳定",
+        "16:9",
+        "1080p",
+        5,
+        "",
+        "sora_video2",
+        "forward",
+        0.5,
+        "keep_original",
+        "cover",
+        -1
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VHS_VideoCombine",
+      "pos": [1000, 100],
+      "size": [300, 200],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "VIDEO",
+          "link": 2
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "VHS_VideoCombine"
+      },
+      "widgets_values": [
+        "sora_image2video",
+        "video/h264-mp4",
+        24,
+        false,
+        true,
+        {}
+      ]
+    },
+    {
+      "id": 4,
+      "type": "ShowText",
+      "pos": [1000, 350],
+      "size": [300, 100],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 3
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "ShowText"
+      },
+      "widgets_values": [
+        "视频URL"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "ShowText",
+      "pos": [1000, 500],
+      "size": [300, 150],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 4
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "ShowText"
+      },
+      "widgets_values": [
+        "响应信息"
+      ]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 2, 0, "IMAGE"],
+    [2, 2, 0, 3, 0, "VIDEO"],
+    [3, 2, 1, 4, 0, "STRING"],
+    [4, 2, 2, 5, 0, "STRING"],
+    [5, 2, 3, 5, 0, "STRING"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "workflow_name": "Sora图生视频",
+    "workflow_description": "从静态图像生成动态视频"
+  },
+  "version": 0.4
+}
+
