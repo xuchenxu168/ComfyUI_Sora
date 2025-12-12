@@ -1,0 +1,1583 @@
+{
+  "id": "5ae1c322-10a5-452e-9bd5-54ca641121f6",
+  "revision": 0,
+  "last_node_id": 55,
+  "last_link_id": 78,
+  "nodes": [
+    {
+      "id": 47,
+      "type": "CR Text",
+      "pos": [
+        2617.439697265625,
+        825.9403076171875
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": []
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 44,
+      "type": "CR Text",
+      "pos": [
+        694.2332763671875,
+        801.159423828125
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": []
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，全景拉远，二人手牵手漫步天台边缘，少女粉色双马尾欢快摇曳，蓝眼睛弯成月牙笑意，水手服裙边樱花随步舞动，王子金发侧脸温柔守护，白色衬衫迎风鼓起，两人身影映在玻璃幕墙，樱花雨倾泻城市夜幕初降，粉紫霓虹交融，构图宽广浪漫空间，动作步伐同步自然，高清真实动态模糊，电影感光影渐暗递进。中文对白，（镜头缓慢跟随二人步伐移动，少女停下脚步转头看向身旁的金发少年，脸上洋溢着幸福的笑容，少年温柔注视回应，背景城市灯火逐渐亮起，风声轻拂）“真希望这条路永远没有尽头，就像这漫天的樱花雨一样，一直一直走下去。只要你在我身边，我就什么都不怕了。”（少年轻轻握紧少女的手，目光坚定看向远方城市天际线，霓虹光影在两人身上流转，夜色更浓，氛围温馨浪漫）"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "CR Text",
+      "pos": [
+        1245.660888671875,
+        824.616943359375
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": []
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，特写少女脸庞，王子手指轻抚她粉色双马尾，蓝眼睛闭合幸福陶醉，水手服脸颊贴他肩头樱花点缀，背景虚化天台栏杆与城市灯海，他金发低头耳语，白色衬衫纹理清晰，夕阳余光粉紫晕染，樱花瓣黏唇角，表情亲昵推进羞涩峰值，高清细腻情感特写，电影级景深光影，材质柔软无畸变下一甜蜜。中文对白，（镜头保持特写，少女缓缓睁开蓝眼睛，眼神中充满羞涩与喜悦，脸颊泛起红晕，她微微抬头看向王子，嘴角轻扬）“我也喜欢你，比这漫天樱花还要多。从第一眼见到你开始，我的世界就被你点亮了。”（王子温柔地帮少女拂去嘴角的樱花瓣，目光深情注视，两人额头相抵，背景城市灯火更加璀璨，光影在两人脸上交织，温馨浪漫的气氛达到顶点）"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "CR Text",
+      "pos": [
+        1701.046142578125,
+        827.5836181640625
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": []
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，中景手持感轻摇，二人相拥天台，王子手臂环住少女纤腰，她粉色双马尾埋入他胸前，蓝眼睛水润仰望，水手服裙摆压出褶皱樱花散落，他金发王子冠冕般耀眼，白色衬衫纽扣微松，城市夜景璀璨星河，粉紫光影拥抱轮廓，樱花环绕不突变，动作拥紧自然升温，高清动态光效，浪漫电影节奏脉动。中文对白，（镜头持续轻微晃动，模拟心跳的节奏，少女的手缓缓抬起，抓紧少年胸前的衬衫，她眼中闪烁着泪光，声音微颤）“我从来没有想过，真的有一天能这样被你抱着。这里好高，风好大，但是你的怀里好温暖，如果这是梦，我希望永远不要醒过来。”（少年低头，下巴轻轻抵在少女头顶，手臂收得更紧了一些，城市霓虹在他们身后拉出流光溢彩的光斑，夜色温柔）"
+      ]
+    },
+    {
+      "id": 38,
+      "type": "CR Text",
+      "pos": [
+        2151.841796875,
+        827.658935546875
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": []
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，远景俯拍慢拉，拥抱中的两人缓缓分开，王子单膝跪地取出戒指盒，少女粉色双马尾惊喜掩嘴，蓝眼睛泪光闪闪，水手服手按心口樱花飞舞，他金发低头深情，天台风止樱花静落，城市全景灯火见证，粉紫暖调永恒一刻，构图居中高潮，表情感动推进永恒，高清电影级辉光，空间层次宏大基础。中文对白，（镜头缓缓上升拉远，王子轻轻打开戒指盒，钻戒在城市灯火映照下闪烁光芒，他抬起金发下的深情双眸，声音坚定而温柔）\"从我们在这座天台相遇的那一天起，我就知道你是我命中注定的人。这枚戒指等了很久，我也等了很久，你愿意让我守护你一辈子吗？\"（少女双手颤抖着捂住嘴，泪水终于滑落脸颊，她用力点头，樱花瓣在这一刻仿佛静止，随后如祝福般纷纷扬扬洒落在两人周围，城市万家灯火在远景中见证这永恒瞬间）"
+      ]
+    },
+    {
+      "id": 51,
+      "type": "Note Plus (mtb)",
+      "pos": [
+        -65.33727264404297,
+        25.527624130249023
+      ],
+      "size": [
+        542.7145385742188,
+        799.07177734375
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "css": "/** here you can write css**/\nh1 {\n    color: whitesmoke;\n}",
+        "widget_ue_connectable": {},
+        "theme": "one_dark"
+      },
+      "widgets_values": [
+        "# <span style=\"font-family: 'Microsoft YaHei'; font-weight: bold; font-size: 40px; color: #FFAB3B;\">🏄‍炮老师全套资料链接🏄‍</span>\n\n## <span style=\"font-family: 'Microsoft YaHei'; font-weight: bold; font-size: 26px; color: FFFFFF;\">👇整合包/入门课/工作流/VIP资源👇\n\n👉https://wxuyk58beb5.feishu.cn/docx/TJF1dpepNoHtsMxP5MfcNJhnnSf\n\n\n  <img style=\"max-width: 100%; height: auto;\" alt=\"描述图片内容\" src=\"https://s1.imagehub.cc/images/2025/01/26/0c1538ba59adc45adced814f12e44889.md.jpg\"></span>",
+        "markdown",
+        "",
+        "one_dark"
+      ],
+      "color": "#721330",
+      "bgcolor": "#862744",
+      "shape": 2
+    },
+    {
+      "id": 52,
+      "type": "MarkdownNote",
+      "pos": [
+        -52.0950813293457,
+        -913.1008911132812
+      ],
+      "size": [
+        512.5709228515625,
+        774.7727661132812
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "大炮工作流使用说明",
+      "properties": {
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "# 🌈              资源说明            🌈\n---\n# ⭐所有免费资源⭐\n## 👉[免费资源](https://wxuyk58beb5.feishu.cn/docx/TJF1dpepNoHtsMxP5MfcNJhnnSf) 👈点击跳转（整合包/公开课/云端）\n\n---\n\n## [工作流和资料免费分享](https://pan.quark.cn/s/d588a76afc19)👈点击跳转\n（可按日期和名称寻找所需工作流或者模型）\n\n---\n\n# 🦁大炮满血整合包下载地址🦁\n## 👉[满血整合包](https://wxuyk58beb5.feishu.cn/docx/TJF1dpepNoHtsMxP5MfcNJhnnSf) 👈点击跳转\n（含模型和环境包 300+工作流一键直出）\n\n---\n\n# 🌈跑不动的可以考虑用我的云端🌈\n\n## 👉[仙宫满血云端](https://www.xiangongyun.com/image/detail/5b5aa403-8e9c-4a81-94a3-ce9a13febb47)👈点击跳转\n\n## ⭐RH平台也有我大部分工作流：\n\n## 👉[RH最新工作流](https://www.runninghub.cn/user-center/1843821604546498561/userPost?inviteCode=kol01-rh138)👈点击跳转\n\n\n---\n\n## ⭐如果需要VIP云端也可联系我\n## 👉[所有工作流展示效果](https://wxuyk58beb5.feishu.cn/docx/IZSadNNb0oqF9rxGw97cQQSgnUo)👈点击查看\n\n---\n\n# 🎥我的所有视频🎥\n## -- 💻[bilibili](https://space.bilibili.com/397686377?spm_id_from=333.33.0.0)👈点击跳转 -- 💻[抖音](https://www.douyin.com/user/MS4wLjABAAAAHSDoiXKglmJvAqDOrjZONAx42I_BGnbcHX51hStBIw_LJILooUMeI2Had3Xp5xW2?from_tab_name=main&vid=7517850368684903717)👈点击跳转\n\n---\n\n# 🥩我的B站comfyui免费课🥩\n## -- 🍱[保姆级comfyui入门公开课](https://www.bilibili.com/video/BV1rP7uzpEvC/?vd_source=2102d46b60c3ac89745322229c864c92)👈点击跳转\n# 🥘本工作流演示说明🥘\n\n## -- 🥨[大炮B站主页](https://space.bilibili.com/397686377)👈点击跳转\n\n## 💫需要VIP永久报错服务或购买专属课可以私我💫\n\n---\n\n## 🐧请联系VX：paolaoshiAICG🐧\n---\n"
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
+    },
+    {
+      "id": 41,
+      "type": "LoadImage",
+      "pos": [
+        755.423583984375,
+        114.54521179199219
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "6.png",
+        "image"
+      ]
+    },
+    {
+      "id": 42,
+      "type": "LoadImage",
+      "pos": [
+        1267.677978515625,
+        119.12081909179688
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "7.png",
+        "image"
+      ]
+    },
+    {
+      "id": 39,
+      "type": "LoadImage",
+      "pos": [
+        1694.823486328125,
+        148.8281707763672
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "8.png",
+        "image"
+      ]
+    },
+    {
+      "id": 43,
+      "type": "LoadImage",
+      "pos": [
+        2100.836669921875,
+        113.91838073730469
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "9.png",
+        "image"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "LoadImage",
+      "pos": [
+        2658.631591796875,
+        133.65005493164062
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 4,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "10.png",
+        "image"
+      ]
+    },
+    {
+      "id": 37,
+      "type": "CR Text",
+      "pos": [
+        2584.2507878846855,
+        -187.63384753343178
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": []
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，远景拉远俯拍，天台全景两人相拥，粉色双马尾少女与金发王子身影融为一体，樱花风暴般漫天飞舞环绕，水手服裙边与西裤褶皱随风，蓝眼睛闭合幸福，王子低头轻吻少女额头，夕阳西沉城市灯海亮起，粉紫光影如纱笼罩，背景 skyline 高楼层层递进，空间深度分明，前景樱花模糊动态，中景两人清晰，高清4K细腻光影，史诗浪漫高潮，无畸变一气呵成。中文对白，王子深情呢喃：“从今以后，我会一直守护你，我的公主。永远在一起。”"
+      ]
+    },
+    {
+      "id": 33,
+      "type": "LoadImage",
+      "pos": [
+        2542.9041549145386,
+        -891.000478227029
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "5.png",
+        "image"
+      ]
+    },
+    {
+      "id": 28,
+      "type": "LoadImage",
+      "pos": [
+        741.1854633851814,
+        -891.968321151267
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            46
+          ]
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "1.png",
+        "image"
+      ]
+    },
+    {
+      "id": 29,
+      "type": "LoadImage",
+      "pos": [
+        1214.7228626521485,
+        -900.5349799215339
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            76
+          ]
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "2.png",
+        "image"
+      ]
+    },
+    {
+      "id": 31,
+      "type": "LoadImage",
+      "pos": [
+        1664.1434270666136,
+        -893.2545160134096
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            71
+          ]
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "3.png",
+        "image"
+      ]
+    },
+    {
+      "id": 32,
+      "type": "LoadImage",
+      "pos": [
+        2053.9635097893106,
+        -906.4977257853158
+      ],
+      "size": [
+        301.9298400878906,
+        633.8685302734375
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          }
+        },
+        {
+          "label": "upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            74
+          ]
+        },
+        {
+          "label": "MASK",
+          "name": "MASK",
+          "type": "MASK"
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.4.0",
+        "Node name for S&R": "LoadImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "4.png",
+        "image"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "CR Text",
+      "pos": [
+        856.853608975076,
+        -175.65937300228586
+      ],
+      "size": [
+        324.8685302734375,
+        119.02496337890625
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": [
+            65
+          ]
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，视频动态流畅，远景俯拍缓慢拉近，夕阳余晖洒满城市天台，粉色长双马尾少女身穿蓝白水手服裙，樱花点缀发梢与裙边随风轻舞，蓝眼睛温柔注视前方，裙摆随微风轻扬飘逸，身后高楼林立灯火初上闪烁，樱花瓣漫天飞舞环绕少女，粉紫光影交织梦幻氛围渐浓，少女微微侧身转动，嘴角浅笑绽放，空间层次分明，前景樱花模糊动态，中景少女清晰动作，背景城市 skyline 渐远灯火，高清电影级光影真实材质无噪点，甜美爱情序曲拉开，镜头平滑推进。中文对白，少女温柔低语：“夕阳好美啊……”\n"
+      ]
+    },
+    {
+      "id": 34,
+      "type": "CR Text",
+      "pos": [
+        1218.8112861225952,
+        -191.83481439700776
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": [
+            77
+          ]
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，中景侧移慢推，少女在天台边缘驻足，粉色双马尾随风飘荡，水手服领结樱花颤动，蓝眼睛惊喜睁大，转身望向远处走来金发白马王子，他身穿白色衬衫黑西裤，高挑英俊微笑挥手，夕阳拉长两人身影，樱花瓣环绕路径，城市霓虹渐亮，粉紫暖光笼罩，构图对称浪漫，少女手轻扶裙摆，王子步伐稳健自然推进，高清细腻纹理，电影感光影层层递进，无畸变基础下一镜。中文对白，少女惊喜低呼：“啊，是你！终于等到你了！”"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "CR Text",
+      "pos": [
+        1674.3602288049974,
+        -195.9050817252666
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": [
+            75
+          ]
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，近景慢推少女脸部，王子走入中景，两人距离拉近，少女粉色双马尾轻扬，樱花瓣从天而降缠绕两人，水手服裙摆微颤，蓝眼睛闪耀期待，王子金发在夕阳光下辉映，白色衬衫袖口微卷，英俊脸庞温柔微笑，城市天际线渐亮霓虹，粉紫光影柔和交融，背景高楼灯火点点，少女脸颊微红，王子伸手轻触少女发梢，高清真实材质，动态光影渐变，浪漫氛围层层升温，一镜到底流畅过渡。中文对白，王子温柔回应：“对不起，让你久等了，美少女。今天的天台好美，就像你一样。”"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "CR Text",
+      "pos": [
+        2126.9207132679335,
+        -194.75982732944564
+      ],
+      "size": [
+        400,
+        200
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "text",
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文本",
+          "name": "text",
+          "type": "*",
+          "links": [
+            78
+          ]
+        },
+        {
+          "label": "显示帮助",
+          "name": "show_help",
+          "type": "STRING"
+        }
+      ],
+      "properties": {
+        "cnr_id": "ComfyUI_Comfyroll_CustomNodes",
+        "ver": "d78b780ae43fcf8c6b7c6505e6ffb4584281ceca",
+        "Node name for S&R": "CR Text",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "漫画风格，中景环绕推进，两人并肩站立天台边缘，少女侧身依偎王子肩头，粉色双马尾与金发交织，樱花瓣如雪般环飞，水手服与白色衬衫材质细腻，蓝眼睛与王子绿眸对视深情，夕阳余晖洒满身影拉成长影，城市夜景全开霓虹璀璨，粉紫暖光梦幻晕染，少女手轻握王子臂弯，王子揽住少女腰肢，构图黄金分割浪漫对称，高清电影级纹理无噪点，粒子樱花动态真实，情感张力递进。中文对白，少女羞涩微笑：“不晚，一点都不晚。我们一起看夕阳吧，王子殿下。”"
+      ]
+    },
+    {
+      "id": 53,
+      "type": "SoraBatchVideo",
+      "pos": [
+        3022.6358890855536,
+        -887.8025998721188
+      ],
+      "size": [
+        400,
+        792
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_batch",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "prompt_list",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "image_1",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 46
+        },
+        {
+          "name": "prompt_1",
+          "shape": 7,
+          "type": "STRING",
+          "link": 65
+        },
+        {
+          "name": "image_2",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 76
+        },
+        {
+          "name": "prompt_2",
+          "shape": 7,
+          "type": "STRING",
+          "link": 77
+        },
+        {
+          "name": "image_3",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 71
+        },
+        {
+          "name": "prompt_3",
+          "shape": 7,
+          "type": "STRING",
+          "link": 75
+        },
+        {
+          "name": "image_4",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 74
+        },
+        {
+          "name": "prompt_4",
+          "shape": 7,
+          "type": "STRING",
+          "link": 78
+        },
+        {
+          "name": "image_5",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "prompt_5",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "image_6",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "prompt_6",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "image_7",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "prompt_7",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "image_8",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "prompt_8",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "image_9",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "prompt_9",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        },
+        {
+          "name": "image_10",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "name": "prompt_10",
+          "shape": 7,
+          "type": "STRING",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "merged_video",
+          "type": "VIDEO",
+          "links": [
+            68
+          ]
+        },
+        {
+          "name": "merged_filename",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_1",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_1",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_2",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_2",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_3",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_3",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_4",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_4",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_5",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_5",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_6",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_6",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_7",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_7",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_8",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_8",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_9",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_9",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "video_10",
+          "type": "VIDEO",
+          "links": null
+        },
+        {
+          "name": "filename_10",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SoraBatchVideo"
+      },
+      "widgets_values": [
+        "comfly",
+        "",
+        "sora-2",
+        "",
+        10,
+        "9:16",
+        "10s",
+        "auto",
+        0.5,
+        1916,
+        "randomize",
+        "sora_batch_output"
+      ]
+    },
+    {
+      "id": 55,
+      "type": "VideoPreviewNode",
+      "pos": [
+        3537.6495095642626,
+        -891.6733241741982
+      ],
+      "size": [
+        511.9485666999344,
+        942.4519394544261
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 68
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "ComfyUI_Video_Utilities",
+        "ver": "616343c5e45a4735d129d02dd0e891e2e6f9252e",
+        "Node name for S&R": "VideoPreviewNode"
+      },
+      "widgets_values": [
+        {
+          "hidden": false,
+          "paused": false,
+          "params": {}
+        }
+      ]
+    }
+  ],
+  "links": [
+    [
+      46,
+      28,
+      0,
+      53,
+      2,
+      "IMAGE"
+    ],
+    [
+      65,
+      30,
+      0,
+      53,
+      3,
+      "STRING"
+    ],
+    [
+      68,
+      53,
+      0,
+      55,
+      0,
+      "VIDEO"
+    ],
+    [
+      71,
+      31,
+      0,
+      53,
+      6,
+      "IMAGE"
+    ],
+    [
+      74,
+      32,
+      0,
+      53,
+      8,
+      "IMAGE"
+    ],
+    [
+      75,
+      35,
+      0,
+      53,
+      7,
+      "STRING"
+    ],
+    [
+      76,
+      29,
+      0,
+      53,
+      4,
+      "IMAGE"
+    ],
+    [
+      77,
+      34,
+      0,
+      53,
+      5,
+      "STRING"
+    ],
+    [
+      78,
+      36,
+      0,
+      53,
+      9,
+      "STRING"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 6,
+      "title": "SORA2 图生视频10并发【手动版】",
+      "bounding": [
+        726.7732543945312,
+        -1304.2528076171875,
+        2243.333251953125,
+        303.3333435058594
+      ],
+      "color": "#3f789e",
+      "font_size": 120,
+      "flags": {}
+    },
+    {
+      "id": 7,
+      "title": "🐧微信：paolaoshiAICG🐧",
+      "bounding": [
+        -55.8309211730957,
+        -123.26652526855469,
+        518.6842651367188,
+        80
+      ],
+      "color": "#df6c20",
+      "font_size": 42,
+      "flags": {}
+    },
+    {
+      "id": 8,
+      "title": "每个视频5分钱，10个相当于5毛 提前在钱包充值",
+      "bounding": [
+        676.5046997070312,
+        1090.641357421875,
+        2630,
+        178.88890075683594
+      ],
+      "color": "#3f789e",
+      "font_size": 120,
+      "flags": {}
+    },
+    {
+      "id": 9,
+      "title": "并发，时间不算久，基本5-10分钟就能出完一整个",
+      "bounding": [
+        668.7096557617188,
+        1299.8690185546875,
+        2630,
+        178.88890075683594
+      ],
+      "color": "#3f789e",
+      "font_size": 120,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.40909090909091,
+      "offset": [
+        846.5042807194459,
+        1545.9913512730202
+      ]
+    },
+    "frontendVersion": "1.34.8",
+    "links_added_by_ue": [],
+    "ue_links": [],
+    "0246.VERSION": [
+      0,
+      0,
+      4
+    ],
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
