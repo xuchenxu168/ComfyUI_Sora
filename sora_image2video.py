@@ -43,20 +43,23 @@ class SoraImage2Video(SoraBaseNode):
                 "quality": ([
                     "720p",
                     "1080p",
-                    "2k",
-                    "4k",
                 ], {
-                    "default": "1080p"
+                    "default": "1080p",
+                    "tooltip": "⚠️ 1080p 仅支持 sora-2-pro 模型，其他模型仅支持 720p"
                 }),
                 "duration": (["5s", "10s", "15s", "25s (Pro)"], {
                     "default": "5s",
                     "tooltip": "视频时长，15s需要使用15s模型，25s仅支持sora-2-pro模型"
                 }),
+                "hd": ("BOOLEAN", {
+                    "default": False,
+                    "tooltip": "⚠️ HD高清模式仅 sora-2-pro 模型支持，不能与25s同时使用"
+                }),
             },
             "optional": {
-                "api_provider": (["t8", "comfly", "aabao"], {
+                "api_provider": (["t8", "t8-us", "t8-hk", "comfly", "comfly-us", "comfly-hk", "aabao"], {
                     "default": "t8",
-                    "tooltip": "选择API提供商：T8、Comfly 或 Aabao (newapi.ai)"
+                    "tooltip": "选择API提供商：T8、T8-US、T8-HK、Comfly、Comfly-US、Comfly-HK 或 Aabao (newapi.ai)"
                 }),
                 "api_key": ("STRING", {
                     "default": "",
@@ -64,12 +67,8 @@ class SoraImage2Video(SoraBaseNode):
                 }),
                 "model": ([
                     "sora_video2",
-                    "sora_video2-portrait-hd",
-                    "sora_video2-landscape-hd",
                     "sora-2-pro",
                     "sora-2",
-                    "sora-1.5",
-                    "sora-1",
                     "[Aabao] sora-2-landscape",
                     "[Aabao] sora-2-landscape-15s",
                     "[Aabao] sora-2-portrait",
@@ -134,7 +133,13 @@ class SoraImage2Video(SoraBaseNode):
     OUTPUT_NODE = True
     FUNCTION = "generate_video"
     CATEGORY = "Ken-Chen/sora"
-    
+    DESCRIPTION = """
+    ⚠️ 重要提示：
+    • 1080p 质量仅支持 sora-2-pro 模型
+    • HD 高清模式仅支持 sora-2-pro 模型
+    • 其他模型仅支持 720p 质量
+    """
+
     def generate_video(
         self,
         image: torch.Tensor,
@@ -142,6 +147,7 @@ class SoraImage2Video(SoraBaseNode):
         aspect_ratio: str,
         quality: str,
         duration: str,
+        hd: bool = False,
         api_provider: str = "t8",
         api_key: str = "",
         model: str = "sora-2",
@@ -160,7 +166,8 @@ class SoraImage2Video(SoraBaseNode):
             prompt: 运动描述提示词
             aspect_ratio: 宽高比
             quality: 质量级别
-            duration: 视频时长（"5s", "10s", "15s"）
+            duration: 视频时长（"5s", "10s", "15s", "25s (Pro)"）
+            hd: HD高清模式（仅sora-2-pro支持，不能与25s同时使用）
             api_provider: API提供商
             api_key: API密钥
             model: 模型名称
@@ -169,6 +176,7 @@ class SoraImage2Video(SoraBaseNode):
             style: 风格
             resize_mode: 调整模式
             seed: 随机种子
+            output_dir: 输出目录
 
         Returns:
             Tuple: (视频对象, 视频URL, 响应信息, 使用的提示词)
@@ -189,6 +197,14 @@ class SoraImage2Video(SoraBaseNode):
                 config_manager.set_comfly_api_key(api_key)
             elif api_provider == 'aabao':
                 config_manager.set_aabao_api_key(api_key)
+            elif api_provider == 't8-us':
+                config_manager.set_t8_us_api_key(api_key)
+            elif api_provider == 't8-hk':
+                config_manager.set_t8_hk_api_key(api_key)
+            elif api_provider == 'comfly-us':
+                config_manager.set_comfly_us_api_key(api_key)
+            elif api_provider == 'comfly-hk':
+                config_manager.set_comfly_hk_api_key(api_key)
             else:
                 config_manager.set_api_key(api_key)
 
@@ -198,6 +214,18 @@ class SoraImage2Video(SoraBaseNode):
             print(f"[Sora Image2Video] {error_msg}")
             # 返回空字符串作为VIDEO路径（ComfyUI的VIDEO类型就是字符串路径）
             return ("", "", error_msg, prompt)
+
+        # 验证HD和25s不能同时使用
+        if hd and duration_int == 25:
+            error_msg = "❌ 错误：HD模式和25秒时长不能同时使用，请选择其中一个"
+            print(f"[Sora Image2Video] {error_msg}")
+            return ("", "", error_msg, prompt)
+
+        # 验证HD模式只支持特定模型
+        if hd and model not in ["sora-2-pro", "sora-2"]:
+            warning_msg = f"⚠️ 警告：HD模式仅支持 sora-2-pro 和 sora-2 模型，当前模型: {model}"
+            print(f"[Sora Image2Video] {warning_msg}")
+            print(f"[Sora Image2Video] 💡 建议：请将模型切换为 sora-2-pro 或 sora-2")
 
         # 验证25s时长只能用于sora-2-pro模型
         if duration_int == 25 and model != "sora-2-pro":
@@ -231,7 +259,9 @@ class SoraImage2Video(SoraBaseNode):
 
         print(f"[Sora Image2Video] 开始生成视频")
         print(f"[Sora Image2Video] API提供商: {api_provider}")
+        print(f"[Sora Image2Video] 模型: {model}")
         print(f"[Sora Image2Video] 宽高比: {aspect_ratio}, 质量: {quality}, 时长: {duration_int}秒")
+        print(f"[Sora Image2Video] HD模式: {'✅ 开启' if hd else '❌ 关闭'}")
         print(f"[Sora Image2Video] 运动: {motion_direction}, 强度: {motion_intensity}")
         print(f"[Sora Image2Video] 🔍 完整提示词: {full_prompt}")
 
@@ -266,14 +296,17 @@ class SoraImage2Video(SoraBaseNode):
         if seed >= 0:
             payload["seed"] = seed
 
-        # 为 aabao 提供商添加视频参数
-        if api_provider == 'aabao':
-            # 获取分辨率
-            width, height = get_aspect_ratio_size(aspect_ratio, quality)
-            payload["size"] = f"{width}x{height}"
-            payload["seconds"] = str(duration_int)
-            # 添加图片参考（base64编码）
-            payload["input_reference"] = image_base64
+        # 添加HD参数（所有支持的模型都使用 hd 参数，由API自己判定）
+        if hd:
+            payload["hd"] = True
+
+        # 为所有提供商添加视频参数（T8、Comfly、Aabao 都需要）
+        # 获取分辨率
+        width, height = get_aspect_ratio_size(aspect_ratio, quality)
+        payload["size"] = f"{width}x{height}"
+        payload["seconds"] = str(duration_int)
+        # 添加图片参考（base64编码）
+        payload["input_reference"] = image_base64
 
         # 调用API（传递进度条实例）
         response_content, video_url, tokens, all_urls = self._call_api(
@@ -402,9 +435,7 @@ class SoraImage2Video(SoraBaseNode):
         # 添加质量描述（严格按照文档格式）
         quality_desc = {
             "720p": "高清720p",
-            "1080p": "全高清1080p",
-            "2k": "2K分辨率",
-            "4k": "4K超高清"
+            "1080p": "全高清1080p"
         }
         if quality in quality_desc:
             parts.append(quality_desc[quality])
@@ -440,4 +471,3 @@ class SoraImage2Video(SoraBaseNode):
 
 # 节点显示名称
 NODE_DISPLAY_NAME = "Sora 图生视频"
-

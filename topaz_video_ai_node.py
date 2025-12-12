@@ -108,8 +108,8 @@ class KenChenTopazVideoEnhancer:
         }
         return {
             "required": {
-                "video": ("VIDEO,STRING", {
-                    "tooltip": "输入视频文件路径或VIDEO对象"
+                "video": ("VIDEO", {
+                    "tooltip": "输入视频文件"
                 }),
                 "model": (upscale_models, {
                     "default": "prob-4"
@@ -189,168 +189,9 @@ class KenChenTopazVideoEnhancer:
     RETURN_TYPES = ("VIDEO", "STRING")
     RETURN_NAMES = ("output_video", "info")
     FUNCTION = "enhance_video"
-    CATEGORY = "Ken-Chen/sora"
+    CATEGORY = "Ken-Chen/Video-post-processing"
     OUTPUT_NODE = False
     
-    def _process_video_input(self, video):
-        """
-        处理视频输入，支持多种格式：
-        1. 字符串路径（现有格式）
-        2. 标准 VIDEO 字典（包含帧张量）
-        3. VHS VIDEO 格式
-        4. ComfyUI API VIDEO 对象
-
-        返回视频文件路径
-        """
-        # 调试：打印输入类型和内容
-        print(f"[Topaz] 🔍 DEBUG: 输入类型 = {type(video)}")
-        print(f"[Topaz] 🔍 DEBUG: 输入值 = {repr(video)[:200]}")
-
-        # 情况1: 字符串路径（现有格式）
-        if isinstance(video, str):
-            print(f"[Topaz] 📹 输入类型: 文件路径")
-            if not video:
-                print(f"[Topaz] ❌ 错误：收到空字符串路径")
-                print(f"[Topaz] 💡 提示：请检查上游节点是否正确输出了视频")
-                return None
-            if not os.path.exists(video):
-                print(f"[Topaz] ❌ 错误：文件不存在: {video}")
-                return None
-            print(f"[Topaz] ✅ 文件路径有效: {video}")
-            return video
-
-        # 情况2: 字典格式（标准 VIDEO 类型）
-        if isinstance(video, dict):
-            print(f"[Topaz] 📹 输入类型: VIDEO 字典对象")
-
-            # VHS 格式: {'filename': 'path/to/video.mp4', ...}
-            if 'filename' in video:
-                video_path = video['filename']
-                print(f"[Topaz] 📂 从 VIDEO 对象提取路径: {video_path}")
-                return video_path
-
-            # 其他可能的格式: {'source_file': '...', ...}
-            if 'source_file' in video:
-                video_path = video['source_file']
-                print(f"[Topaz] 📂 从 VIDEO 对象提取路径: {video_path}")
-                return video_path
-
-            # 如果包含帧张量，需要先保存为临时文件
-            if 'frames' in video or 'tensor' in video:
-                print(f"[Topaz] ⚠️ VIDEO 对象包含帧张量，需要先保存为临时文件")
-                return self._save_video_tensor_to_file(video)
-
-            print(f"[Topaz] ⚠️ 未知的 VIDEO 对象格式: {video.keys()}")
-            return None
-
-        # 情况3: ComfyUI API VIDEO 对象
-        # 检查是否有常见的属性或方法
-        video_type_name = type(video).__name__
-        print(f"[Topaz] 📹 输入类型: {video_type_name}")
-
-        # 尝试获取文件路径的常见属性（优先检查 saved_path，这是 Sora 节点设置的）
-        for attr in ['saved_path', 'path', 'file_path', 'filepath', 'filename', 'file', 'source', 'source_file', 'video_path']:
-            if hasattr(video, attr):
-                video_path = getattr(video, attr)
-                if video_path and isinstance(video_path, str):
-                    if os.path.exists(video_path):
-                        print(f"[Topaz] 📂 从 {video_type_name}.{attr} 提取路径: {video_path}")
-                        return video_path
-                    else:
-                        print(f"[Topaz] ⚠️ {video_type_name}.{attr} 存在但文件不存在: {video_path}")
-
-        # 尝试调用常见的方法
-        for method in ['get_path', 'get_file_path', 'get_filename', 'to_path']:
-            if hasattr(video, method):
-                try:
-                    video_path = getattr(video, method)()
-                    if video_path and isinstance(video_path, str):
-                        print(f"[Topaz] 📂 从 {video_type_name}.{method}() 提取路径: {video_path}")
-                        return video_path
-                except:
-                    pass
-
-        # 尝试转换为字符串
-        try:
-            video_str = str(video)
-            if video_str and os.path.exists(video_str):
-                print(f"[Topaz] 📂 从 str({video_type_name}) 提取路径: {video_str}")
-                return video_str
-        except:
-            pass
-
-        # 尝试检查 __dict__ 属性
-        if hasattr(video, '__dict__'):
-            video_dict = video.__dict__
-            print(f"[Topaz] 🔍 检查对象属性: {list(video_dict.keys())}")
-
-            for key in ['path', 'file_path', 'filepath', 'filename', 'file', 'source', 'source_file', 'video_path']:
-                if key in video_dict:
-                    video_path = video_dict[key]
-                    if video_path and isinstance(video_path, str):
-                        print(f"[Topaz] 📂 从对象属性 {key} 提取路径: {video_path}")
-                        return video_path
-
-        # 情况4: 无法识别的类型
-        print(f"[Topaz] ❌ 无法从 {video_type_name} 提取视频路径")
-        print(f"[Topaz] 🔍 对象信息: {dir(video)[:10]}...")  # 打印前10个属性
-        return None
-
-    def _save_video_tensor_to_file(self, video_dict):
-        """
-        将 VIDEO 张量保存为临时视频文件
-        """
-        try:
-            import numpy as np
-            import cv2
-
-            # 提取帧张量
-            frames = video_dict.get('frames') or video_dict.get('tensor')
-            if frames is None:
-                print(f"[Topaz] ❌ VIDEO 对象中未找到帧数据")
-                return None
-
-            # 转换为 numpy 数组
-            if isinstance(frames, torch.Tensor):
-                frames_np = frames.cpu().numpy()
-            else:
-                frames_np = np.array(frames)
-
-            # 获取视频参数
-            fps = video_dict.get('fps', 30)
-            frame_count, height, width, channels = frames_np.shape
-
-            print(f"[Topaz] 📊 视频信息: {frame_count} 帧, {width}x{height}, {fps} fps")
-
-            # 创建临时文件
-            import time
-            timestamp = int(time.time())
-            temp_path = os.path.join(self.output_dir, f"temp_input_{timestamp}.mp4")
-
-            # 使用 OpenCV 保存视频
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            out = cv2.VideoWriter(temp_path, fourcc, fps, (width, height))
-
-            for i in range(frame_count):
-                frame = frames_np[i]
-                # 转换颜色空间 (RGB -> BGR)
-                if channels == 3:
-                    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-                # 确保数据类型正确
-                if frame.dtype != np.uint8:
-                    frame = (frame * 255).astype(np.uint8)
-                out.write(frame)
-
-            out.release()
-            print(f"[Topaz] ✅ 临时视频已保存: {temp_path}")
-            return temp_path
-
-        except Exception as e:
-            print(f"[Topaz] ❌ 保存视频张量失败: {e}")
-            import traceback
-            traceback.print_exc()
-            return None
-
     def find_topaz_ffmpeg(self) -> str:
         """
         查找Topaz Video AI的ffmpeg可执行文件
@@ -407,16 +248,9 @@ class KenChenTopazVideoEnhancer:
         actual_model_id = self.model_id_map.get(model, model)
         print(f"[Topaz] 模型选择: {model} -> {actual_model_id}")
 
-        # 处理输入视频 - 支持多种格式
-        video_path = self._process_video_input(video)
-        if not video_path:
-            error_msg = "无效的视频输入"
-            print(f"[Topaz] {error_msg}")
-            return ("", error_msg)
-
         # 验证输入
-        if not os.path.exists(video_path):
-            error_msg = f"视频文件不存在: {video_path}"
+        if not video or not os.path.exists(video):
+            error_msg = f"视频文件不存在: {video}"
             print(f"[Topaz] {error_msg}")
             return ("", error_msg)
         
@@ -430,9 +264,9 @@ class KenChenTopazVideoEnhancer:
             return ("", error_msg)
         
         print(f"[Topaz] 使用Topaz ffmpeg: {topaz_path}")
-
+        
         # 准备输出路径
-        video_name = os.path.splitext(os.path.basename(video_path))[0]
+        video_name = os.path.splitext(os.path.basename(video))[0]
         import time
         timestamp = int(time.time())
         output_path = os.path.join(self.output_dir, f"{video_name}_topaz_{timestamp}.{output_format}")
@@ -485,7 +319,7 @@ class KenChenTopazVideoEnhancer:
             topaz_path,
             "-y",  # 覆盖输出文件
             "-hwaccel", "auto",  # 硬件加速
-            "-i", video_path,
+            "-i", video,
             "-vf", filter_str,
             "-c:v", "mpeg4",  # 必须使用mpeg4！
             "-q:v", "2",  # 质量参数
@@ -493,8 +327,8 @@ class KenChenTopazVideoEnhancer:
             "-c:a", "copy",  # 复制音频
             output_path
         ]
-
-        print(f"[Topaz] 🎬 开始处理视频: {video_path}")
+        
+        print(f"[Topaz] 🎬 开始处理视频: {video}")
         print(f"[Topaz] 📊 模型: {model}")
         print(f"[Topaz] 📐 缩放: {scale_factor}")
         print(f"[Topaz] 🎨 分辨率: {output_resolution}")

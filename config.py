@@ -40,6 +40,14 @@ class ConfigManager:
             'comfly_base_url': 'https://ai.comfly.chat/v1',
             'aabao_api_key': '',  # Aabao (newapi.ai) API密钥
             'aabao_base_url': 'https://api.aabao.top/v1',  # Aabao API基础URL
+            't8-us_api_key': '',
+            't8-us_base_url': 'https://api.gptbest.vip/v1',
+            't8-hk_api_key': '',
+            't8-hk_base_url': 'https://hk-api.gptbest.vip/v1',
+            'comfly-us_api_key': '',
+            'comfly-us_base_url': 'https://api.gptbest.vip/v1',
+            'comfly-hk_api_key': '',
+            'comfly-hk_base_url': 'https://hk-api.gptbest.vip/v1',
             'timeout': 600,
             'default_model': 'sora-2',
             'default_quality': '1080p',
@@ -124,6 +132,46 @@ class ConfigManager:
         """设置Aabao API基础URL"""
         self.set('aabao_base_url', base_url)
 
+    # T8-US getters/setters
+    def get_t8_us_api_key(self) -> str:
+        return self.config.get('t8-us_api_key', '')
+    
+    def set_t8_us_api_key(self, api_key: str) -> None:
+        self.set('t8-us_api_key', api_key)
+
+    def get_t8_us_base_url(self) -> str:
+        return self.config.get('t8-us_base_url', 'https://api.gptbest.vip/v1')
+
+    # T8-HK getters/setters
+    def get_t8_hk_api_key(self) -> str:
+        return self.config.get('t8-hk_api_key', '')
+    
+    def set_t8_hk_api_key(self, api_key: str) -> None:
+        self.set('t8-hk_api_key', api_key)
+
+    def get_t8_hk_base_url(self) -> str:
+        return self.config.get('t8-hk_base_url', 'https://hk-api.gptbest.vip/v1')
+        
+    # Comfly-US getters/setters
+    def get_comfly_us_api_key(self) -> str:
+        return self.config.get('comfly-us_api_key', '')
+    
+    def set_comfly_us_api_key(self, api_key: str) -> None:
+        self.set('comfly-us_api_key', api_key)
+
+    def get_comfly_us_base_url(self) -> str:
+        return self.config.get('comfly-us_base_url', 'https://api.gptbest.vip/v1')
+
+    # Comfly-HK getters/setters
+    def get_comfly_hk_api_key(self) -> str:
+        return self.config.get('comfly-hk_api_key', '')
+    
+    def set_comfly_hk_api_key(self, api_key: str) -> None:
+        self.set('comfly-hk_api_key', api_key)
+
+    def get_comfly_hk_base_url(self) -> str:
+        return self.config.get('comfly-hk_base_url', 'https://hk-api.gptbest.vip/v1')
+
     def get_current_api_config(self, provider: Optional[str] = None) -> Dict[str, str]:
         """
         获取当前API配置（根据提供商）
@@ -147,6 +195,26 @@ class ConfigManager:
                 'api_key': self.get_aabao_api_key(),
                 'base_url': self.get_aabao_base_url()
             }
+        elif provider == 't8-us':
+            return {
+                'api_key': self.get_t8_us_api_key(),
+                'base_url': self.get_t8_us_base_url()
+            }
+        elif provider == 't8-hk':
+            return {
+                'api_key': self.get_t8_hk_api_key(),
+                'base_url': self.get_t8_hk_base_url()
+            }
+        elif provider == 'comfly-us':
+            return {
+                'api_key': self.get_comfly_us_api_key(),
+                'base_url': self.get_comfly_us_base_url()
+            }
+        elif provider == 'comfly-hk':
+            return {
+                'api_key': self.get_comfly_hk_api_key(),
+                'base_url': self.get_comfly_hk_base_url()
+            }
         else:  # 't8' 或其他
             return {
                 'api_key': self.get_api_key(),
@@ -167,4 +235,3 @@ def save_config(config: Dict[str, Any]) -> None:
     """保存配置字典（兼容旧代码）"""
     config_manager.config = config
     config_manager.save_config()
-

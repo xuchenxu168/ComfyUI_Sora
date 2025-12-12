@@ -1121,6 +1121,215 @@ class SoraBaseNode:
             traceback.print_exc()
             return (error_msg, "", "", [])
 
+    def _call_openai_videos_api(
+        self,
+        prompt: str,
+        model: str,
+        size: str,
+        seconds: str,
+        api_key: str,
+        base_url: str,
+        pbar=None,
+        input_reference: Optional[str] = None,
+        seed: Optional[int] = None,
+        provider: str = 'comfly'
+    ) -> Tuple[str, str, str, list]:
+        """
+        调用 OpenAI Videos API 格式（T8 和 Comfly 通用）
+
+        参考 Comfly_sora2_openai 节点实现
+        端点: /v1/videos 或 /videos
+        """
+        import requests
+        import json
+        import time
+
+        # T8 和 Comfly 都使用 /videos 端点
+        api_url = f"{base_url.rstrip('/')}/videos"
+        # 注意：不要设置 Content-Type，让 requests 自动处理 multipart/form-data
+        headers = {
+            "Authorization": f"Bearer {api_key}"
+        }
+
+        print(f"[Sora] API提供商: {provider} (OpenAI Videos)")
+        print(f"[Sora] 请求API: {api_url}")
+        print(f"[Sora] 模型: {model}")
+        print(f"[Sora] 分辨率: {size}")
+        print(f"[Sora] 时长: {seconds}秒")
+
+        # 构建请求数据
+        data = {
+            "model": model,
+            "prompt": prompt,
+            "seconds": seconds,
+            "size": size
+        }
+
+        if seed and seed > 0:
+            data["seed"] = str(seed)
+            print(f"[Sora] 种子: {seed}")
+
+        # 处理图片参考
+        import base64
+        import io
+
+        files = []
+        if input_reference:
+            print(f"[Sora] 🔍 检测到 input_reference，类型: {type(input_reference)}, 长度: {len(input_reference) if isinstance(input_reference, str) else 'N/A'}")
+            try:
+                # 去掉 data:image/xxx;base64, 前缀（如果有）
+                if isinstance(input_reference, str) and ',' in input_reference:
+                    print(f"[Sora] 🔍 去除 data URI 前缀")
+                    input_reference = input_reference.split(',', 1)[1]
+
+                # 解码 base64 图片
+                image_data = base64.b64decode(input_reference)
+                buffered = io.BytesIO(image_data)
+                files.append(('input_reference', ('image.png', buffered, 'image/png')))
+                print(f"[Sora] 📷 包含图片参考 ({len(image_data)} bytes)")
+            except Exception as e:
+                print(f"[Sora] ⚠️ 图片参考处理失败: {e}")
+                import traceback
+                traceback.print_exc()
+        else:
+            print(f"[Sora] 🔍 input_reference 为空或 None")
+
+        # 重要：如果没有图片，添加一个虚拟空文件来强制使用 multipart/form-data
+        # 否则 requests 会使用 application/x-www-form-urlencoded，导致参数丢失
+        if not files:
+            files.append(('_dummy', ('', io.BytesIO(b''), 'application/octet-stream')))
+            print(f"[Sora] 📝 文生视频模式（无图片参考）")
+
+        try:
+            # 第一步：创建视频生成任务
+            print(f"[Sora] 📤 发送视频生成请求...")
+            print(f"[Sora] 📋 请求参数: model={model}, prompt={prompt[:50]}..., seconds={seconds}, size={size}")
+
+            if pbar:
+                pbar.update_absolute(10)
+
+            # 重要：即使 files 为空，也要传递空列表（而不是 None）
+            # 这样 requests 会使用 multipart/form-data 格式
+            response = requests.post(
+                api_url,
+                headers=headers,
+                data=data,
+                files=files,
+                timeout=900,
+                proxies=self.proxies,
+                verify=False
+            )
+
+            print(f"[Sora] 📊 响应状态码: {response.status_code}")
+
+            if response.status_code != 200:
+                error_msg = f"API错误 (状态码: {response.status_code}): {response.text}"
+                print(f"[Sora] {error_msg}")
+                return (error_msg, "", "", [])
+
+            # 解析响应
+            result = response.json()
+            print(f"[Sora] 📄 响应: {json.dumps(result, ensure_ascii=False, indent=2)}")
+
+            # 获取任务ID
+            if "id" not in result:
+                error_msg = "No task ID in API response"
+                print(f"[Sora] {error_msg}")
+                return (error_msg, "", "", [])
+
+            task_id = result["id"]
+            print(f"[Sora] 📋 任务ID: {task_id}")
+
+            if pbar:
+                pbar.update_absolute(20)
+
+            # 第二步：轮询任务状态
+            max_attempts = 120  # 最多轮询 120 次
+            poll_interval = 10  # 每 10 秒轮询一次
+            attempts = 0
+            video_url = None
+            actual_seed = str(seed) if seed and seed > 0 else "0"
+
+            print(f"[Sora] ⏳ 开始轮询任务状态...")
+
+            while attempts < max_attempts:
+                time.sleep(poll_interval)
+                attempts += 1
+
+                try:
+                    status_url = f"{api_url}/{task_id}"
+                    status_response = requests.get(
+                        status_url,
+                        headers=headers,
+                        timeout=30,
+                        proxies=self.proxies,
+                        verify=False
+                    )
+
+                    if status_response.status_code != 200:
+                        print(f"[Sora] ⚠️ 查询状态失败: HTTP {status_response.status_code}")
+                        continue
+
+                    status_data = status_response.json()
+                    status = status_data.get("status", "")
+                    progress = status_data.get("progress", 0)
+
+                    # 更新进度条
+                    if pbar:
+                        try:
+                            progress_int = int(progress)
+                            pbar_value = min(90, 20 + int(progress_int * 0.7))
+                            pbar.update_absolute(pbar_value)
+                        except (ValueError, TypeError):
+                            progress_value = min(80, 20 + (attempts * 60 // max_attempts))
+                            pbar.update_absolute(progress_value)
+
+                    print(f"[Sora] 📊 状态: {status}, 进度: {progress}%")
+
+                    # 检查是否完成
+                    if status == "completed":
+                        video_url = status_data.get("video_url")
+                        if not video_url and "url" in status_data:
+                            video_url = status_data.get("url")
+
+                        if "seed" in status_data:
+                            actual_seed = str(status_data.get("seed", "0"))
+
+                        if video_url:
+                            print(f"[Sora] ✅ 视频生成完成！")
+                            print(f"[Sora] 视频URL: {video_url}")
+
+                            if pbar:
+                                pbar.update_absolute(100)
+
+                            response_content = json.dumps(status_data, indent=2, ensure_ascii=False)
+                            return (response_content, video_url, "", [video_url])
+                        else:
+                            error_msg = "视频生成完成但未找到视频URL"
+                            print(f"[Sora] {error_msg}")
+                            return (json.dumps(status_data), "", "", [])
+
+                    elif status == "failed":
+                        fail_reason = status_data.get("fail_reason", "Unknown error")
+                        error_msg = f"视频生成失败: {fail_reason}"
+                        print(f"[Sora] {error_msg}")
+                        return (error_msg, "", "", [])
+
+                except Exception as e:
+                    print(f"[Sora] ⚠️ 查询状态异常: {str(e)}")
+
+            # 超时
+            error_msg = f"视频生成超时（{max_attempts * poll_interval // 60}分钟），任务ID: {task_id}"
+            print(f"[Sora] {error_msg}")
+            return (error_msg, "", "", [])
+
+        except Exception as e:
+            error_msg = f"API调用失败: {e}"
+            print(f"[Sora] {error_msg}")
+            import traceback
+            traceback.print_exc()
+            return (error_msg, "", "", [])
+
     def _call_api(self, payload: Dict[str, Any], api_key: Optional[str] = None, api_provider: Optional[str] = None, base_url: Optional[str] = None, pbar=None) -> Tuple[str, str, str, list]:
         """
         调用Sora API
@@ -1145,6 +1354,46 @@ class SoraBaseNode:
                 api_key = api_config['api_key']
             if base_url is None:
                 base_url = api_config['base_url']
+
+        # T8 和 Comfly 提供商使用 OpenAI Videos API 格式
+        if provider in ['t8', 'comfly']:
+            # 从 payload 中提取参数
+            messages = payload.get('messages', [])
+            prompt = ""
+            if messages:
+                user_msg = messages[-1].get('content', '')
+                # content 可能是字符串或数组
+                if isinstance(user_msg, str):
+                    prompt = user_msg
+                elif isinstance(user_msg, list):
+                    # 从数组中提取文本部分
+                    for item in user_msg:
+                        if isinstance(item, dict) and item.get('type') == 'text':
+                            prompt = item.get('text', '')
+                            break
+
+            # 从 payload 中提取视频参数
+            model = payload.get('model', 'sora-2')
+            size = payload.get('size', '720x1280')
+            seconds = payload.get('seconds', '10')
+            seed = payload.get('seed', None)
+
+            # 提取图片参考（如果有）
+            input_reference = payload.get('input_reference', None)
+
+            # T8 和 Comfly 使用相同的 API 格式
+            return self._call_openai_videos_api(
+                prompt=prompt,
+                model=model,
+                size=size,
+                seconds=seconds,
+                api_key=api_key,
+                base_url=base_url,
+                pbar=pbar,
+                input_reference=input_reference,
+                seed=seed,
+                provider=provider
+            )
 
         # 如果是 aabao 提供商，检查模型类型
         if provider == 'aabao':
@@ -1191,227 +1440,10 @@ class SoraBaseNode:
                     input_reference=input_reference
                 )
 
-        # 其他提供商使用聊天完成 API
-        headers = self._build_headers(api_key)
-        api_url = f"{base_url.rstrip('/')}/chat/completions"
-
-        print(f"[Sora] API提供商: {provider}")
-        print(f"[Sora] 请求API: {api_url}")
-        print(f"[Sora] 模型: {payload.get('model', 'unknown')}")
-
-        # 打印视频参数（如果有）
-        if 'size' in payload:
-            print(f"[Sora] 分辨率: {payload['size']}")
-        if 'seconds' in payload:
-            print(f"[Sora] 时长: {payload['seconds']}秒")
-
-        # 打印提示词预览
-        messages = payload.get('messages', [])
-        if messages:
-            user_msg = messages[-1].get('content', '')
-            if isinstance(user_msg, str):
-                preview = (user_msg[:120] + "...") if len(user_msg) > 120 else user_msg
-                print(f"[Sora] 提示词: {preview}")
-
-        try:
-            # 发送请求
-            response = requests.post(
-                api_url,
-                headers=headers,
-                json=payload,
-                timeout=self.timeout,
-                stream=payload.get('stream', True)
-            )
-
-            print(f"[Sora] 响应状态码: {response.status_code}")
-
-            if response.status_code != 200:
-                error_msg = f"API错误 (状态码: {response.status_code}): {response.text}"
-                return (error_msg, "", "", [])
-
-            # 解析响应（传递进度条实例）
-            if payload.get('stream', True):
-                content, tokens = self._parse_stream_response(response, pbar=pbar)
-            else:
-                content, tokens = self._parse_non_stream_response(response)
-
-            # 打印完整响应内容用于调试（修复编码后）
-            normalized_content = self._normalize_text(content)
-            print(f"[Sora] 响应内容长度: {len(normalized_content)} 字符")
-            if normalized_content:
-                # 打印前500字符
-                preview = normalized_content[:500] if len(normalized_content) > 500 else normalized_content
-                print(f"[Sora] 响应内容预览: {preview}")
-                # 如果内容很长，也打印最后200字符
-                if len(normalized_content) > 500:
-                    print(f"[Sora] 响应内容结尾: ...{normalized_content[-200:]}")
-
-            # 检查是否有内容审核错误（使用normalized_content）
-            if "违反" in normalized_content or "政策" in normalized_content or "系统错误" in normalized_content:
-                if "OpenAI" in normalized_content or "服务政策" in normalized_content:
-                    error_msg = "⚠️ API内容审核失败：提示词可能包含敏感内容\n"
-                    error_msg += "建议：\n"
-                    error_msg += "1. 避免敏感词：美女、战斗、血腥、暴力等\n"
-                    error_msg += "2. 使用中性词：人物、角色、互动、展示等\n"
-                    error_msg += "3. 切换API提供商：在节点中设置 api_provider: comfly\n"
-                    error_msg += f"\n原始响应：{normalized_content[:300]}"
-                    print(f"[Sora] {error_msg}")
-                    return (error_msg, "", tokens, [])
-
-            # 提取所有视频URL
-            all_urls = self._extract_video_urls(content)
-            video_url = all_urls[0] if all_urls else ""
-
-            if video_url:
-                print(f"[Sora] ✅ 成功提取视频URL: {video_url[:100]}...")
-                if len(all_urls) > 1:
-                    print(f"[Sora] 📋 共找到 {len(all_urls)} 个候选URL，将按优先级尝试")
-
-                # 如果URL是asyncdata.net的链接，轮询视频状态直到完成
-                if 'asyncdata.net' in video_url:
-                    # 提取任务ID
-                    task_id_match = re.search(r'(task_[a-z0-9]+)', video_url)
-                    if task_id_match:
-                        task_id = task_id_match.group(1)
-                        print(f"[Sora] 🔍 检测到asyncdata.net任务: {task_id}")
-
-                        # 根据模型和时长动态设置轮询超时时间
-                        model = payload.get('model', '')
-                        seconds = payload.get('seconds', '')
-
-                        if model == 'sora-2-pro':
-                            max_poll_time = 2400  # 40分钟
-                            print(f"[Sora] ⏰ sora-2-pro 模型，设置轮询超时: {max_poll_time//60} 分钟")
-                        elif seconds and int(seconds) >= 25:
-                            max_poll_time = 2400  # 40分钟
-                            print(f"[Sora] ⏰ 25秒视频，设置轮询超时: {max_poll_time//60} 分钟")
-                        elif seconds and int(seconds) >= 15:
-                            max_poll_time = 1200  # 20分钟
-                            print(f"[Sora] ⏰ 15秒视频，设置轮询超时: {max_poll_time//60} 分钟")
-                        else:
-                            max_poll_time = 600   # 10分钟
-                            print(f"[Sora] ⏰ 标准视频，设置轮询超时: {max_poll_time//60} 分钟")
-
-                        poll_interval = 10   # 每10秒轮询一次
-                        start_time = time.time()
-                        video_ready = False
-
-                        print(f"[Sora] ⏳ 开始轮询视频生成状态（最长等待 {max_poll_time//60} 分钟）...")
-
-                        while time.time() - start_time < max_poll_time:
-                            try:
-                                # 尝试多个API端点检查状态
-                                api_endpoints = [
-                                    f"https://asyncdata.net/api/share/{task_id}",
-                                    f"https://asyncdata.net/source/{task_id}",
-                                ]
-
-                                for api_url in api_endpoints:
-                                    try:
-                                        api_response = requests.get(api_url, timeout=10, proxies=self.proxies, allow_redirects=True)
-
-                                        if api_response.status_code == 200:
-                                            content_type = api_response.headers.get('Content-Type', '')
-
-                                            # 如果是JSON，检查状态
-                                            if 'json' in content_type:
-                                                api_data = api_response.json()
-
-                                                # 检查是否有视频URL（表示完成）
-                                                def find_video_url_in_response(data, depth=0):
-                                                    if depth > 5:
-                                                        return None
-                                                    if isinstance(data, dict):
-                                                        for key in ['video_url', 'url', 'videoUrl', 'video', 'file_url', 'fileUrl']:
-                                                            if key in data and isinstance(data[key], str) and data[key].startswith('http'):
-                                                                return data[key]
-                                                        for value in data.values():
-                                                            result = find_video_url_in_response(value, depth + 1)
-                                                            if result:
-                                                                return result
-                                                    elif isinstance(data, list):
-                                                        for item in data:
-                                                            result = find_video_url_in_response(item, depth + 1)
-                                                            if result:
-                                                                return result
-                                                    return None
-
-                                                found_url = find_video_url_in_response(api_data)
-                                                if found_url:
-                                                    print(f"[Sora] ✅ 视频生成完成！找到视频URL")
-                                                    video_ready = True
-                                                    # 更新video_url为真实的视频URL
-                                                    video_url = found_url
-                                                    # 也更新all_urls列表
-                                                    if found_url not in all_urls:
-                                                        all_urls.insert(0, found_url)
-                                                    break
-
-                                            # 如果是视频文件，说明完成了
-                                            elif 'video' in content_type or 'octet-stream' in content_type:
-                                                print(f"[Sora] ✅ 视频生成完成！")
-                                                video_ready = True
-                                                break
-
-                                    except Exception as e:
-                                        continue
-
-                                if video_ready:
-                                    break
-
-                                # 显示等待进度
-                                elapsed = int(time.time() - start_time)
-                                print(f"[Sora] ⏳ 等待视频生成完成... ({elapsed}秒)")
-
-                                # 更新进度条
-                                if pbar is not None:
-                                    try:
-                                        # 显示等待进度（85-95%之间）
-                                        wait_progress = 85 + min(10, int(elapsed / poll_interval))
-                                        pbar.update_absolute(wait_progress, 100)
-                                    except Exception:
-                                        pass
-
-                                time.sleep(poll_interval)
-
-                            except Exception as e:
-                                print(f"[Sora] ⚠️ 轮询异常: {e}")
-                                time.sleep(poll_interval)
-
-                        if video_ready:
-                            print(f"[Sora] ✅ 视频已准备就绪，开始下载")
-                            # 最终进度100%
-                            if pbar is not None:
-                                try:
-                                    pbar.update_absolute(100, 100)
-                                except Exception:
-                                    pass
-                        else:
-                            print(f"[Sora] ⚠️ 轮询超时（{max_poll_time//60}分钟），尝试直接下载")
-                            print(f"[Sora] 💡 提示：sora-2-pro 模型生成25秒视频可能需要20-30分钟")
-                    else:
-                        # 无法提取任务ID，使用旧的等待逻辑
-                        wait_time = 30
-                        print(f"[Sora] ⏳ 无法提取任务ID，等待{wait_time}秒后尝试下载...")
-                        time.sleep(wait_time)
-            else:
-                print(f"[Sora] ❌ 未能提取到视频URL")
-                print(f"[Sora] 完整响应内容: {content}")
-
-            return (content, video_url, tokens, all_urls)
-
-        except requests.exceptions.Timeout as e:
-            error_msg = f"请求超时: {e}"
-            print(f"[Sora] {error_msg}")
-            return (error_msg, "", "", [])
-        except requests.exceptions.ConnectionError as e:
-            error_msg = f"网络连接错误: {e}"
-            print(f"[Sora] {error_msg}")
-            return (error_msg, "", "", [])
-        except Exception as e:
-            error_msg = f"API调用失败: {e}"
-            print(f"[Sora] {error_msg}")
-            return (error_msg, "", "", [])
+        # 其他未知提供商报错
+        error_msg = f"不支持的 API 提供商: {provider}。支持的提供商: t8, comfly, aabao"
+        print(f"[Sora] ❌ {error_msg}")
+        return (error_msg, "", "", [])
     
     def _parse_non_stream_response(self, response: requests.Response) -> Tuple[str, str]:
         """
@@ -1557,8 +1589,6 @@ class SoraBaseNode:
                 # 对于 /source/ 链接，直接调用 GET 获取 JSON
                 if '/source/' in url:
                     try:
-                        import requests
-
                         # 根据模型和时长动态设置轮询超时时间
                         model = metadata.get('model', '') if metadata else ''
                         duration = metadata.get('duration', 0) if metadata else 0
@@ -1707,8 +1737,16 @@ class SoraBaseNode:
                 if HAS_COMFY_API_NODES:
                     # 使用comfy_api_nodes的异步下载函数
                     print(f"[Sora] 📥 开始异步下载...")
-                    video_output = asyncio.run(download_url_to_video_output(url, timeout=120))
-                    print(f"[Sora] ✅ 视频下载完成")
+                    print(f"[Sora] 💡 视频URL: {url}")
+                    
+                    # 增加超时时间到600秒（10分钟）
+                    try:
+                        video_output = asyncio.run(download_url_to_video_output(url, timeout=600))
+                        print(f"[Sora] ✅ 视频下载完成")
+                    except asyncio.TimeoutError:
+                        print(f"[Sora] ⚠️ 异步下载超时，尝试使用备用方法...")
+                        # 如果异步下载失败，尝试备用方法
+                        raise Exception("Async download timeout, falling back to requests")
 
                     # 保存视频到output目录（参考ComfyUI的SaveVideo节点）
                     saved_path = None
@@ -1761,7 +1799,7 @@ class SoraBaseNode:
                     output_path = os.path.join(sora_output_dir, filename)
 
                     print(f"[Sora] 下载到: {output_path}")
-                    response = requests.get(url, timeout=self.timeout, stream=True)
+                    response = requests.get(url, timeout=self.timeout, stream=True, verify=False)
                     response.raise_for_status()
 
                     total_size = int(response.headers.get('content-length', 0))
@@ -1810,4 +1848,131 @@ class SoraBaseNode:
                     print(f"[Sora] 5. 或等待更长时间后重试（视频可能还在生成）\n")
 
         return None
+
+    def _call_comfly_multi_image_api(self, payload: Dict[str, Any], api_key: str, pbar=None) -> Tuple[str, str, str, list]:
+        """
+        调用Comfly多图参考视频生成API
+
+        使用 https://ai.comfly.chat/v2/videos/generations 端点
+
+        Args:
+            payload: 请求载荷，包含:
+                - prompt: 提示词
+                - model: 模型名称
+                - images: base64图片数组
+                - aspect_ratio: 宽高比
+                - duration: 时长
+                - hd: HD模式
+                - seed: 随机种子（可选）
+            api_key: API密钥
+            pbar: 进度条实例（可选）
+
+        Returns:
+            Tuple[str, str, str, list]: (响应内容, 视频URL, token信息, 所有URL列表)
+        """
+        import requests
+        import json
+        import time
+
+        api_url = "https://ai.comfly.chat/v2/videos/generations"
+
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+
+        print(f"[Sora MultiImage] 调用Comfly多图API: {api_url}")
+        print(f"[Sora MultiImage] 模型: {payload.get('model')}")
+        print(f"[Sora MultiImage] 图片数量: {len(payload.get('images', []))}")
+        print(f"[Sora MultiImage] 宽高比: {payload.get('aspect_ratio')}")
+        print(f"[Sora MultiImage] 时长: {payload.get('duration')}秒")
+        print(f"[Sora MultiImage] HD模式: {payload.get('hd', False)}")
+
+        try:
+            # 发送请求
+            response = requests.post(
+                api_url,
+                headers=headers,
+                json=payload,
+                timeout=600  # 10分钟超时
+            )
+
+            print(f"[Sora MultiImage] 响应状态码: {response.status_code}")
+
+            if response.status_code != 200:
+                error_msg = f"API错误 (状态码: {response.status_code}): {response.text}"
+                print(f"[Sora MultiImage] {error_msg}")
+                return (error_msg, "", "", [])
+
+            # 解析响应
+            result = response.json()
+            print(f"[Sora MultiImage] 响应: {json.dumps(result, ensure_ascii=False, indent=2)}")
+
+            # 检查是否是任务ID响应
+            if 'task_id' in result or 'id' in result:
+                task_id = result.get('task_id') or result.get('id')
+                print(f"[Sora MultiImage] 获得任务ID: {task_id}")
+
+                # 轮询任务状态
+                max_poll_time = 1200  # 20分钟
+                poll_interval = 5  # 5秒轮询一次
+                start_time = time.time()
+
+                while time.time() - start_time < max_poll_time:
+                    time.sleep(poll_interval)
+
+                    # 查询任务状态
+                    status_url = f"https://ai.comfly.chat/v2/videos/generations/{task_id}"
+                    status_response = requests.get(status_url, headers=headers, timeout=30)
+
+                    if status_response.status_code == 200:
+                        status_result = status_response.json()
+                        status = status_result.get('status', 'unknown')
+
+                        print(f"[Sora MultiImage] 任务状态: {status}")
+
+                        if pbar:
+                            elapsed = time.time() - start_time
+                            progress = min(int((elapsed / max_poll_time) * 100), 99)
+                            pbar.update_absolute(progress, 100)
+
+                        if status == 'completed' or status == 'succeeded':
+                            # 提取视频URL
+                            video_url = status_result.get('video_url') or status_result.get('url')
+                            if video_url:
+                                print(f"[Sora MultiImage] ✅ 视频生成成功: {video_url}")
+                                if pbar:
+                                    pbar.update_absolute(100, 100)
+                                return (json.dumps(status_result), video_url, "", [video_url])
+
+                        elif status == 'failed' or status == 'error':
+                            error_msg = status_result.get('error', '未知错误')
+                            print(f"[Sora MultiImage] ❌ 任务失败: {error_msg}")
+                            return (error_msg, "", "", [])
+
+                    else:
+                        print(f"[Sora MultiImage] 查询状态失败: {status_response.status_code}")
+
+                # 超时
+                error_msg = f"任务超时（{max_poll_time}秒）"
+                print(f"[Sora MultiImage] {error_msg}")
+                return (error_msg, "", "", [])
+
+            # 直接返回视频URL的情况
+            elif 'video_url' in result or 'url' in result:
+                video_url = result.get('video_url') or result.get('url')
+                print(f"[Sora MultiImage] ✅ 直接获得视频URL: {video_url}")
+                return (json.dumps(result), video_url, "", [video_url])
+
+            else:
+                error_msg = f"无法从响应中提取视频URL或任务ID: {result}"
+                print(f"[Sora MultiImage] {error_msg}")
+                return (error_msg, "", "", [])
+
+        except Exception as e:
+            error_msg = f"API调用异常: {e}"
+            print(f"[Sora MultiImage] {error_msg}")
+            import traceback
+            traceback.print_exc()
+            return (error_msg, "", "", [])
 

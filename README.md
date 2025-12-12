@@ -5,7 +5,7 @@
 ![ComfyUI_Sora](https://img.shields.io/badge/ComfyUI-Sora-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.9+-blue)
-![Version](https://img.shields.io/badge/version-1.2.0-orange)
+![Version](https://img.shields.io/badge/version-1.4.0-orange)
 
 **专业的 ComfyUI Sora 视频生成节点集合**
 
@@ -58,6 +58,12 @@
   - 15 秒（需要 15s 模型）
   - 25 秒（仅 sora-2-pro 模型）⭐
 
+- **HD 高清模式** ⭐
+  - 支持 sora-2-pro 和 sora-2 模型
+  - 通过 `hd` 参数启用，由 API 自动处理
+  - 更高的视频质量和细节（约 1.6 倍价格）
+  - 不能与 25s 时长同时使用
+
 - **丰富的风格选项**
   - 自动（Auto）
   - 电影感（Cinematic）
@@ -87,7 +93,77 @@
   - 电影感、写实、动漫、3D
   - 油画、水彩
 
-#### 3. Topaz 视频增强节点 ⭐
+#### 3. Sora 多图参考视频生成节点 ⭐
+
+> **✨ 新功能**：支持最多 4 张图片作为参考生成视频
+
+- **多图输入**
+  - 支持 1-4 张参考图片
+  - 自动转换为 base64 格式
+  - 仅 Comfly API 支持
+
+- **高级控制**
+  - HD 高清模式支持
+  - 时长控制（5s-25s）
+  - 随机种子控制
+
+- **应用场景**
+  - 多角度视频生成
+  - 故事板转视频
+  - 风格融合创作
+  - 场景过渡效果
+
+#### 4. Grok Imagine 视频生成节点 ⭐
+
+> **✨ 新功能**：使用 xAI 的 Grok Imagine 0.9 模型生成视频
+
+- **模型特性**
+  - 基于 Aurora 引擎的视频生成模型
+  - 原生音频-视频同步
+  - 24 FPS，1024×1024 分辨率
+  - 生成速度：12-15 秒
+
+- **双模式支持** ⭐
+  - **文本生成视频**（Text-to-Video）
+    - 纯文本提示词生成视频
+    - 适合从零创作
+  - **图像生成视频**（Image-to-Video）
+    - 将静态图片转换为动态视频
+    - 支持 ComfyUI IMAGE 格式
+    - 自动添加运动和音频
+
+- **时长控制**
+  - 6 秒（快速）
+  - 8 秒（标准）
+  - 10 秒（推荐）
+  - 12 秒（详细）
+  - 15 秒（最长）
+
+- **质量选项**
+  - Standard（标准）
+  - High（高质量）
+
+- **风格模式**
+  - Normal（正常）
+  - Fun（趣味）
+  - Spicy（激烈）
+  - Custom（自定义）
+
+- **API 支持**
+  - 仅支持 Aabao API 提供商
+  - 通过 Chat Completions 端点调用
+  - 支持多模态输入（文本 + 图像）
+  - 按次计费（$0.240-$1.600/次）
+
+- **应用场景**
+  - 快速视频原型制作
+  - 静态图片动画化
+  - 音频-视觉同步内容
+  - 营销视频生成
+  - 社交媒体内容创作
+  - 照片转短视频
+
+#### 5. Topaz 视频增强节点 ⭐
 
 > **⚠️ 注意**：此节点需要另外安装 [Topaz Video AI](https://www.topazlabs.com/topaz-video-ai) 软件才能使用
 
@@ -102,7 +178,7 @@
   - 支持 ComfyUI VIDEO 对象
   - 自动提取视频路径
 
-#### 4. 视频水印节点
+#### 6. 视频水印节点
 - **基础水印**
   - 文字水印
   - 图片水印
@@ -115,7 +191,7 @@
   - 批量处理
   - 目标跟踪（实验性）
 
-#### 5. 帧混合器节点
+#### 7. 帧混合器节点
 - **时间平滑**
   - 多帧混合
   - 降噪
@@ -389,6 +465,7 @@ Available Nodes:
 | `aspect_ratio` | 选择 | 宽高比（16:9 / 9:16） | 16:9 |
 | `quality` | 选择 | 质量（720p / 1080p / 2k / 4k） | 1080p |
 | `duration` | 选择 | 时长（5s / 10s / 15s / 25s (Pro)） | 5s |
+| `hd` | 布尔 | HD高清模式（通过 `hd` 参数传递给 API）⭐ | False |
 | `api_provider` | 选择 | API 提供商（t8 / comfly / aabao） | t8 |
 | `api_key` | 文本 | API 密钥（可选） | - |
 | `model` | 选择 | 模型选择 | sora_video2 |
@@ -428,6 +505,7 @@ Available Nodes:
 | `aspect_ratio` | 选择 | 宽高比 | 16:9 |
 | `quality` | 选择 | 质量 | 1080p |
 | `duration` | 选择 | 时长 | 5s |
+| `hd` | 布尔 | HD高清模式（仅sora-2-pro/sora-2支持，不能与25s同时使用）⭐ | False |
 | `motion_direction` | 选择 | 运动方向 | auto |
 | `motion_intensity` | 浮点 | 运动强度 | 0.5 |
 | `style` | 选择 | 风格 | keep_original |
@@ -489,7 +567,63 @@ Available Nodes:
 
 ---
 
-### 4. 🎨 视频水印节点
+### 4. 🖼️🖼️ Sora 多图参考视频生成节点 ⭐
+
+> **✨ 新功能**：支持最多 4 张图片作为参考生成视频
+
+**功能特点**：
+- ✅ 支持 1-4 张参考图片
+- ✅ 仅 Comfly API 支持此功能
+- ✅ 支持 HD 高清模式
+- ✅ 支持 sora-2 和 sora-2-pro 模型
+
+**输入参数**：
+
+| 参数 | 类型 | 说明 | 默认值 |
+|-----|------|------|--------|
+| `prompt` | 文本 | 视频描述提示词 | "根据参考图片生成视频" |
+| `aspect_ratio` | 选择 | 宽高比（16:9 / 9:16） | 16:9 |
+| `quality` | 选择 | 质量（720p / 1080p / 2k / 4k） | 1080p |
+| `duration` | 选择 | 时长（5s / 10s / 15s / 25s (Pro)） | 10s |
+| `hd` | 布尔 | HD高清模式（不能与25s同时使用） | False |
+| `image1` | IMAGE | 第1张参考图片（可选） | - |
+| `image2` | IMAGE | 第2张参考图片（可选） | - |
+| `image3` | IMAGE | 第3张参考图片（可选） | - |
+| `image4` | IMAGE | 第4张参考图片（可选） | - |
+| `api_provider` | 选择 | API 提供商（仅支持 comfly） | comfly |
+| `api_key` | 文本 | API 密钥（可选） | - |
+| `model` | 选择 | 模型（sora-2 / sora-2-pro） | sora-2 |
+| `seed` | 整数 | 随机种子（-1 为随机） | -1 |
+| `output_dir` | 文本 | 输出目录 | sora_videos |
+
+**输出**：
+- `video`: VIDEO 对象
+- `Filenames`: VHS_FILENAMES 格式
+- `video_url`: 视频 URL
+- `response_info`: 响应信息（JSON）
+- `prompt_used`: 实际使用的提示词
+
+**使用说明**：
+1. **至少提供 1 张图片**：必须连接至少一个 image 输入
+2. **图片顺序**：按 image1 → image2 → image3 → image4 的顺序提供
+3. **API 限制**：此功能仅 Comfly API 支持，会自动切换到 Comfly
+4. **HD 限制**：HD 模式和 25s 时长不能同时使用
+5. **模型限制**：仅支持 sora-2 和 sora-2-pro 模型
+
+**应用场景**：
+- 📸 **多角度视频**：使用多张不同角度的照片生成连贯视频
+- 🎬 **故事板视频**：将故事板图片转换为动态视频
+- 🎨 **风格融合**：结合多张不同风格的图片生成独特视频
+- 🏞️ **场景过渡**：使用多张场景图片生成平滑过渡视频
+
+**示例提示词**：
+```
+根据这些参考图片，生成一段流畅的视频，展示从白天到黄昏的景色变化，镜头缓慢推进
+```
+
+---
+
+### 5. 🎨 视频水印节点
 
 #### 基础水印节点
 
@@ -678,7 +812,9 @@ Available Nodes:
 
 ## 🎯 工作流示例
 
-我们提供了 6 个即用型工作流，可直接导入 ComfyUI 使用：
+我们提供了 9 个即用型工作流，可直接导入 ComfyUI 使用：
+
+### Sora 工作流
 
 | 工作流 | 场景 | 宽高比 | 难度 |
 |--------|------|--------|------|
@@ -688,6 +824,14 @@ Available Nodes:
 | [04_多风格对比](workflows/04_multi_style_comparison.json) | 风格探索 | 16:9 | ⭐⭐⭐ |
 | [05_图生视频高级](workflows/05_image2video_advanced.json) | 运动控制 | 16:9 | ⭐⭐⭐ |
 | [06_方形社交媒体](workflows/06_square_social_media.json) | Instagram | 1:1 | ⭐ |
+
+### Grok Imagine 工作流 ⭐
+
+| 工作流 | 场景 | 模式 | 难度 |
+|--------|------|------|------|
+| [07_Grok文生视频](workflows/07_grok_imagine_text2video.json) | 快速视频原型 | Text-to-Video | ⭐ |
+| [08_Grok图生视频](workflows/08_grok_imagine_image2video.json) | 照片动画化 | Image-to-Video | ⭐⭐ |
+| [09_Grok风格对比](workflows/09_grok_imagine_style_comparison.json) | 风格探索 | Text-to-Video | ⭐⭐⭐ |
 
 **使用方法**：
 1. 将 JSON 文件拖放到 ComfyUI 窗口，或点击 "Load" 加载
@@ -796,6 +940,77 @@ API 提供商：aabao
 - 人物表情生动
 - 自然的微动效果
 - 电影感画面
+
+---
+
+### 示例 6：Grok Imagine 文本生成视频 ⭐
+
+```
+节点：GrokImagineNode
+提示词：A majestic golden eagle soaring through a mountain valley at sunset, with dramatic lighting and cinematic camera movement
+时长：10秒
+质量：high
+风格：normal
+API 提供商：aabao
+```
+
+**预期效果**：
+- 6-15 秒带音频的视频
+- 原生音频-视频同步
+- 生成速度：12-15 秒
+- 1024×1024 分辨率，24 FPS
+
+**特点**：
+- ✅ 自动生成背景音乐和环境音
+- ✅ 快速生成（比 Sora 快 10 倍）
+- ✅ 适合快速原型制作
+
+---
+
+### 示例 7：Grok Imagine 图像生成视频 ⭐
+
+```
+节点：GrokImagineNode
+输入：一张人物肖像照片
+提示词：Make the person smile naturally and blink, add subtle head movement, with soft lighting
+时长：6秒
+质量：high
+风格：normal
+API 提供商：aabao
+```
+
+**预期效果**：
+- 静态照片变成动态视频
+- 人物自然微笑和眨眼
+- 带有同步的环境音
+- 适合社交媒体分享
+
+**应用场景**：
+- ✅ 照片动画化
+- ✅ 产品展示视频
+- ✅ 历史照片复活
+- ✅ 艺术作品动态化
+
+---
+
+### 示例 8：Grok Imagine 风格对比
+
+```
+节点：GrokImagineNode (3个)
+提示词：A cute cat playing with a ball of yarn in a cozy living room
+时长：8秒
+质量：high
+种子：42 (固定种子确保可比性)
+
+风格 1：normal - 真实自然
+风格 2：fun - 趣味活泼，色彩鲜艳
+风格 3：spicy - 戏剧性强烈，视觉冲击
+```
+
+**预期效果**：
+- 相同提示词，不同风格表现
+- 可对比选择最佳效果
+- 探索创意可能性
 
 ---
 
@@ -1242,7 +1457,44 @@ ComfyUI/output/sora_videos/sora_YYYYMMDD_HHMMSS_xxxxx.mp4
 
 ## 📝 更新日志
 
-### v1.2.0 (2025-10-18) ⭐ 最新
+### v1.4.0 (2025-10-18) ⭐ 最新
+
+**新功能**：
+- ✨ **Grok Imagine 视频生成节点**：支持 xAI 的 Grok Imagine 0.9 模型
+  - 基于 Aurora 引擎的视频生成
+  - 原生音频-视频同步
+  - 6-15 秒时长控制
+  - 多种质量和风格选项
+  - 仅支持 Aabao API 提供商
+
+**改进**：
+- 🔧 添加 Grok Imagine 节点文档
+- 🔧 更新节点列表和功能说明
+
+### v1.3.0 (2025-10-18)
+
+**新功能**：
+- ✨ **HD 高清模式支持**：sora-2-pro 和 sora-2 模型支持 HD 参数（通过 `hd: true` 传递给 API）
+- ✨ **多图参考视频生成节点**：支持最多 4 张图片作为参考生成视频
+- ✨ 添加 HD 和 25s 互斥验证
+- ✨ 添加 Comfly 多图 API 调用方法
+- 🔧 **HD 参数实现优化**：统一使用 `hd` 参数而非模型名称切换，兼容所有镜像站
+
+**改进**：
+- 🔧 优化参数验证逻辑
+- 🔧 改进日志输出（显示 HD 状态）
+- 🔧 更新文档和使用说明
+- 🔧 添加多图节点使用示例
+
+**技术细节**：
+- 📦 新增 `sora_multi_image2video.py` 节点
+- 📦 新增 `_call_comfly_multi_image_api()` 方法
+- 📦 支持 base64 图片数组传输
+- 📦 支持 Comfly `/v2/videos/generations` 端点
+
+---
+
+### v1.2.0 (2025-10-17)
 
 **新功能**：
 - ✨ 添加 Aabao API 支持
@@ -1351,7 +1603,7 @@ ComfyUI/output/sora_videos/sora_YYYYMMDD_HHMMSS_xxxxx.mp4
 
 <div align="center">
 
-<img src="https://github.com/xuchenxu168/images/blob/main/%E5%BE%AE%E4%BF%A1%E5%8F%B7.jpg" alt="微信二维码" width="200"/>
+<img src="assets/wechat_qrcode.png" alt="微信二维码" width="200"/>
 
 **扫码添加微信**
 
@@ -1365,7 +1617,7 @@ ComfyUI/output/sora_videos/sora_YYYYMMDD_HHMMSS_xxxxx.mp4
 
 <div align="center">
 
-<img src="https://github.com/xuchenxu168/images/blob/main/%E6%94%B6%E6%AC%BE%E7%A0%81.jpg" alt="微信收款二维码" width="200"/>
+<img src="assets/wechat_pay_qrcode.png" alt="微信收款二维码" width="200"/>
 
 **微信赞赏**
 

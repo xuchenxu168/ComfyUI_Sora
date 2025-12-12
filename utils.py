@@ -261,8 +261,6 @@ def get_aspect_ratio_size(aspect_ratio: str, quality: str = "1080p") -> Tuple[in
     quality_resolutions = {
         "720p": 720,
         "1080p": 1080,
-        "2k": 1440,
-        "4k": 2160,
     }
 
     base_resolution = quality_resolutions.get(quality, 1080)
